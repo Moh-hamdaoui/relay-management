@@ -9,9 +9,10 @@ if (fs.existsSync(dbPath)) {
   fs.unlinkSync(dbPath);
 }
 
-await import("../config/initDb.js");
-await import("../config/seedDb.js");
-const { default: db } = await import("../config/db.js");
+await import("../db/initDb.js");
+const { seedMinimalIfEmpty } = await import("../db/seedData.js");
+seedMinimalIfEmpty();
+const { default: db } = await import("../db/db.js");
 
 function assert(cond, msg) {
   if (!cond) throw new Error(msg);
@@ -21,13 +22,13 @@ const userCount = db.prepare("SELECT COUNT(*) AS c FROM user").get().c;
 assert(userCount === 2, `attendu 2 users, obtenu ${userCount}`);
 
 const respCount = db.prepare("SELECT COUNT(*) AS c FROM responsibility").get().c;
-assert(respCount === 3, `attendu 3 responsibilities, obtenu ${respCount}`);
+assert(respCount === 6, `attendu 6 responsibilities, obtenu ${respCount}`);
 
 const unavCount = db.prepare("SELECT COUNT(*) AS c FROM unavailability").get().c;
-assert(unavCount === 1, `attendu 1 unavailability, obtenu ${unavCount}`);
+assert(unavCount === 3, `attendu 3 unavailabilities, obtenu ${unavCount}`);
 
 const covCount = db.prepare("SELECT COUNT(*) AS c FROM coverage").get().c;
-assert(covCount === 2, `attendu 2 coverages, obtenu ${covCount}`);
+assert(covCount === 8, `attendu 8 coverages, obtenu ${covCount}`);
 
 const orphanResp = db
   .prepare(
@@ -63,6 +64,6 @@ assert(alice, "Alice seed");
 const aliceResp = db
   .prepare("SELECT COUNT(*) AS c FROM responsibility WHERE owner_id = ?")
   .get(alice.id).c;
-assert(aliceResp === 2, "Alice doit avoir 2 responsibilities");
+assert(aliceResp === 3, "Alice doit avoir 3 responsibilities");
 
 console.log("OK — base SQLite : tables, seed et intégrité référentielle vérifiés.");

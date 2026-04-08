@@ -1,7 +1,9 @@
 import "dotenv/config";
-import "./config/initDb.js";
-import "./config/seedDb.js";
+import "./db/initDb.js";
+import { seedMinimalIfEmpty } from "./db/seedData.js";
 import app from "./app.js";
+
+seedMinimalIfEmpty();
 
 const PORT = Number(process.env.PORT) || 3000;
 
