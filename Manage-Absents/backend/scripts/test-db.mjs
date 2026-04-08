@@ -9,9 +9,9 @@ if (fs.existsSync(dbPath)) {
   fs.unlinkSync(dbPath);
 }
 
-await import("../config/initDb.js");
-await import("../config/seedDb.js");
-const { default: db } = await import("../config/db.js");
+await import("../../../../api-relay/config/initDb.js");
+await import("../../../../api-relay/config/seedDb.js");
+const { default: db } = await import("../../../../api-relay/config/db.js");
 
 function assert(cond, msg) {
   if (!cond) throw new Error(msg);
