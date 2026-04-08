@@ -15,4 +15,6 @@ schema.split(";").forEach((statement) => {
   if (s) db.exec(s);
 });
 
-console.log("✅ Base de données initialisée");
+if (process.env.RELAY_INIT_DB_QUIET !== "1") {
+  console.log("✅ Base de données initialisée");
+}

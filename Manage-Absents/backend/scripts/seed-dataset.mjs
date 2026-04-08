@@ -1,13 +1,3 @@
-#!/usr/bin/env node
-/**
- * Remplit relay.db avec un jeu de données démo (utilisateurs, responsibilities, absences, coverages).
- *
- * Usage :
- *   npm run db:seed              → insère le JDD seulement si aucun user (sinon erreur)
- *   npm run db:seed:reset        → vide les données puis insère le JDD complet
- *
- * Prérequis : schéma appliqué (le script importe initDb).
- */
 import "dotenv/config";
 import { fileURLToPath } from "url";
 import path from "path";
@@ -17,20 +7,24 @@ const root = path.join(__dirname, "..");
 
 process.chdir(root);
 
-await import("../../../../api-relay/config/initDb.js");
-const { default: db } = await import("../../../../api-relay/config/db.js");
+process.env.RELAY_INIT_DB_QUIET = "1";
+await import("../config/initDb.js");
+const { default: db } = await import("../config/db.js");
 const { clearDataset, insertFullDemoDataset } = await import(
-  "../../../../api-relay/config/seedData.js",
+  "../config/seedData.js",
 );
 
 const reset = process.argv.includes("--reset");
 const count = db.prepare("SELECT COUNT(*) AS c FROM user").get().c;
 
 if (count > 0 && !reset) {
-  console.error(
-    "La base contient déjà des utilisateurs. Lance avec --reset pour tout supprimer puis recharger le jeu de données :\n  npm run db:seed:reset",
+  console.log(
+    "Seed ignoré : des utilisateurs sont déjà présents (rien n’a été modifié).",
   );
-  process.exit(1);
+  console.log(
+    "Pour vider la base et recharger le jeu démo : npm run db:seed:reset",
+  );
+  process.exit(0);
 }
 
 if (reset && count > 0) {
