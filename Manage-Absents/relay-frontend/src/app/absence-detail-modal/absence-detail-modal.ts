@@ -134,9 +134,12 @@ export class AbsenceDetailModal {
   }
 
   removeCoverage(coverageId: string) {
-    if (!this.absence) {
+    if (!this.absence || this.isPastAbsence()) {
       return;
     }
+    const coverage = this.coverages.find((c) => c.id === coverageId);
+    if (!coverage) return;
+    if (coverage.covering_user_id !== this.currentUser?.id) return;
 
     this.dataService.deleteCoverage(this.absence.user_id, this.absence.id, coverageId).subscribe({
       next: () => {
@@ -146,6 +149,31 @@ export class AbsenceDetailModal {
         console.error('Error deleting coverage:', err);
       },
     });
+  }
+
+  assignToSelf(responsibilityId: string) {
+    if (!this.absence || !this.currentUser || this.isPastAbsence()) return;
+    const existing = this.coverages.find((c) => c.responsibility_id === responsibilityId);
+    if (existing) return;
+    const coveragePayload = {
+      responsibilityId: responsibilityId,
+      coveringUserId: this.currentUser.id,
+    };
+    this.dataService
+      .createCoverage(this.absence.user_id, this.absence.id, coveragePayload)
+      .subscribe({
+        next: () => {
+          this.coverageUpdated.emit();
+        },
+        error: (err) => {
+          console.error('Error creating coverage:', err);
+        },
+      });
+  }
+
+  getCoverageIdForResponsibility(responsibilityId: string): string | null {
+    const coverage = this.coverages.find((c) => c.responsibility_id === responsibilityId);
+    return coverage ? coverage.id : null;
   }
 
   getUserName(userId: string | null): string {
@@ -181,9 +209,16 @@ export class AbsenceDetailModal {
   }
 
   getAbsenceResponsibilities(): Responsibility[] {
-    // Retourne les responsabilités de l'utilisateur absent
+    // Retourne toutes les responsabilités de l'utilisateur absent
     if (!this.absence) return [];
     return this.responsibilities.filter(r => r.user_id === this.absence!.user_id);
+  }
+
+  getUncoveredResponsibilities(): Responsibility[] {
+    const responsibilities = this.getAbsenceResponsibilities();
+    return responsibilities.filter((responsibility) => {
+      return !this.coverages.some((coverage) => coverage.responsibility_id === responsibility.id);
+    });
   }
 
   approveAbsence() {

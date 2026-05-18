@@ -1,0 +1,14 @@
+.my-absences-form input[type='date'] {
+  width: 100%;
+}
+
+.my-absences-grid {
+  display: grid;
+  gap: 1.5rem;
+}
+
+@media (min-width: 1024px) {
+  .my-absences-grid {
+    grid-template-columns: 1.3fr 0.7fr;
+  }
+}

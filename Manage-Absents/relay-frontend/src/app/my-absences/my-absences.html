@@ -1,0 +1,94 @@
+<div class="min-h-screen bg-background my-absences-page">
+  <div class="border-border bg-card">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-8">
+      <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between mt-8">
+        <div class="mb-6 lg:mb-0">
+          <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+            <div>
+              <h1 class="text-3xl font-bold tracking-tight text-foreground">Mes absences</h1>
+              <p class="text-muted-foreground mt-2">Déclarez une nouvelle absence et consultez vos absences déclarées.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div *ngIf="!currentUser" class="rounded-2xl border border-border bg-card p-8 text-center">
+      <p class="text-foreground text-lg font-semibold">Vous devez être connecté pour déclarer une absence.</p>
+      <p class="text-muted-foreground mt-2">Veuillez vous connecter depuis la barre de navigation.</p>
+    </div>
+
+    <ng-container *ngIf="currentUser">
+      <div class="my-absences-grid">
+        <div class="rounded-2xl border border-border bg-card p-6 shadow-sm">
+          <h2 class="text-xl font-semibold text-foreground mb-4">Déclarer une absence</h2>
+
+          <div *ngIf="errorMessage" class="mb-4 rounded-xl bg-red-50 border border-red-200 p-4 text-sm text-red-700">
+            {{ errorMessage }}
+          </div>
+          <div *ngIf="successMessage" class="mb-4 rounded-xl bg-emerald-50 border border-emerald-200 p-4 text-sm text-emerald-700">
+            {{ successMessage }}
+          </div>
+
+          <label class="block text-sm font-medium text-foreground">Date de début</label>
+          <input
+            type="date"
+            [(ngModel)]="form.startDate"
+            class="mt-2 w-full rounded-xl border border-border bg-background px-4 py-3 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+          />
+
+          <label class="block text-sm font-medium text-foreground mt-4">Date de fin</label>
+          <input
+            type="date"
+            [(ngModel)]="form.endDate"
+            class="mt-2 w-full rounded-xl border border-border bg-background px-4 py-3 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+          />
+
+          <button
+            type="button"
+            (click)="createAbsence()"
+            [disabled]="isLoading"
+            class="mt-6 inline-flex items-center justify-center rounded-2xl bg-primary px-4 py-3 text-sm font-semibold text-primary-foreground transition hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-60"
+          >
+            Déclarer l’absence
+          </button>
+        </div>
+
+        <div class="rounded-2xl border border-border bg-card p-6 shadow-sm">
+          <h2 class="text-xl font-semibold text-foreground mb-4">Connexion</h2>
+          <p class="text-sm text-muted-foreground">Connecté en tant que :</p>
+          <p class="mt-2 text-base font-semibold text-foreground">{{ currentUser.firstname }} {{ currentUser.surname }}</p>
+          <p class="text-sm text-muted-foreground">{{ currentUser.email }}</p>
+        </div>
+      </div>
+
+      <section class="mt-10">
+        <div class="rounded-2xl border border-border bg-card p-6 shadow-sm">
+          <h2 class="text-xl font-semibold text-foreground mb-4">Absences déclarées</h2>
+
+          <div *ngIf="isLoading" class="py-10 text-center text-muted-foreground">Chargement...</div>
+          <div *ngIf="!isLoading && absences.length === 0" class="py-10 text-center text-muted-foreground">
+            Vous n’avez encore déclaré aucune absence.
+          </div>
+
+          <div *ngIf="!isLoading && absences.length > 0" class="space-y-4">
+            <div *ngFor="let absence of absences" class="rounded-2xl border border-border bg-background p-5">
+              <div class="flex items-center justify-between gap-4">
+                <div>
+                  <p class="text-sm text-muted-foreground">Du</p>
+                  <p class="text-base font-semibold text-foreground">{{ formatDate(absence.start_date) }}</p>
+                </div>
+                <div>
+                  <p class="text-sm text-muted-foreground">Au</p>
+                  <p class="text-base font-semibold text-foreground">{{ formatDate(absence.end_date) }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </ng-container>
+  </div>
+</div>

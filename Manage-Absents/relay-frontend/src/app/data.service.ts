@@ -87,6 +87,12 @@ export class DataService {
     return this.http.delete<void>(`${this.apiUrl}/users/${userId}/unavailabilities/${absenceId}/coverages/${coverageId}`);
   }
 
+  createAbsence(userId: string, payload: { startDate: string; endDate: string; reason?: string }): Observable<Absence> {
+    return this.http.post<any>(`${this.apiUrl}/users/${userId}/unavailabilities`, payload).pipe(
+      map((item) => this.normalizeAbsence(item))
+    );
+  }
+
   private normalizeAbsence(raw: any): Absence {
     return {
       id: raw.id ?? raw._id ?? '',

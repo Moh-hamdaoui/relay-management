@@ -14,6 +14,7 @@ export class AbsenceCard {
   @Input() user: User | null | undefined;
   @Input() coverages: Coverage[] = [];
   @Input() coverageUsers: User[] = [];
+  @Input() currentUser: User | null = null;
 
   @Output() cardClick = new EventEmitter<Absence>();
 
@@ -99,6 +100,10 @@ export class AbsenceCard {
     }
 
     const id = String(userId);
+    if (this.currentUser && this.currentUser.id === id) {
+      return 'Vous';
+    }
+
     const user = this.coverageUsers.find(u => u.id === id);
     return user ? `${user.firstname} ${user.surname}` : 'Utilisateur inconnu';
   }

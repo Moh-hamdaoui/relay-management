@@ -67,6 +67,7 @@
           [user]="getUser(absence.user_id)"
           [coverages]="getCoveragesForAbsence(absence.id)"
           [coverageUsers]="users"
+          [currentUser]="currentUser"
           (cardClick)="selectAbsence(absence)"
         />
       </div>

@@ -8,6 +8,7 @@ import { AuthService } from '../auth-service';
   standalone: true,
   imports: [CommonModule, RouterModule],
   templateUrl: './nav-bar.html',
+  styleUrl: './nav-bar.css',
 })
 export class NavBar {
   constructor(private authService: AuthService) {}

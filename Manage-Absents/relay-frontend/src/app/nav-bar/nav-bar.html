@@ -10,23 +10,28 @@
     </div>
 
     <div class="flex flex-wrap items-center gap-2">
-      <a routerLink="/dashboard" routerLinkActive="font-semibold text-foreground" class="px-3 py-2 rounded-lg text-sm text-muted-foreground hover:bg-muted hover:text-foreground transition">
-        Tableau de bord
-      </a>
+      <ng-container *ngIf="isAuthenticated()">
+        <a routerLink="/dashboard" routerLinkActive="active" class="nav-link px-3 py-2 rounded-lg text-sm text-muted-foreground hover:bg-[#F9F8FB] hover:text-foreground transition">
+          Tableau de bord
+        </a>
+        <a routerLink="/mes-absences" routerLinkActive="active" class="nav-link px-3 py-2 rounded-lg text-sm text-muted-foreground hover:bg-[#F9F8FB] hover:text-foreground transition">
+          Mes absences
+        </a>
+      </ng-container>
       <ng-container *ngIf="isAuthenticated(); else guestLinks">
         <button
           type="button"
           (click)="logout()"
-          class="px-3 py-2 rounded-lg text-sm text-muted-foreground border border-border bg-background hover:bg-card hover:text-foreground transition"
+          class="px-3 py-2 rounded-lg text-sm text-muted-foreground border border-border bg-background hover:bg-card hover:bg-[#F9F8FB] transition"
         >
           Déconnexion
         </button>
       </ng-container>
       <ng-template #guestLinks>
-        <a routerLink="/login" routerLinkActive="font-semibold text-foreground" class="px-3 py-2 rounded-lg text-sm text-muted-foreground hover:bg-muted hover:text-foreground transition">
+        <a routerLink="/login" routerLinkActive="active" class="nav-link px-3 py-2 rounded-lg text-sm text-muted-foreground hover:bg-[#F9F8FB] hover:text-foreground transition">
           Connexion
         </a>
-        <a routerLink="/register" routerLinkActive="font-semibold text-foreground" class="px-3 py-2 rounded-lg text-sm text-muted-foreground hover:bg-muted hover:text-foreground transition">
+        <a routerLink="/register" routerLinkActive="active" class="nav-link px-3 py-2 rounded-lg text-sm text-muted-foreground hover:bg-[#F9F8FB] hover:text-foreground transition">
           Inscription
         </a>
       </ng-template>

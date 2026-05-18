@@ -9,16 +9,10 @@ if (fs.existsSync(dbPath)) {
   fs.unlinkSync(dbPath);
 }
 
-<<<<<<< HEAD
-await import("../../../../api-relay/config/initDb.js");
-await import("../../../../api-relay/config/seedDb.js");
-const { default: db } = await import("../../../../api-relay/config/db.js");
-=======
 await import("../db/initDb.js");
 const { seedMinimalIfEmpty } = await import("../db/seedData.js");
 seedMinimalIfEmpty();
 const { default: db } = await import("../db/db.js");
->>>>>>> 8c6a18418166b2f4a3c88a3c9033e4972e7705b2
 
 function assert(cond, msg) {
   if (!cond) throw new Error(msg);
