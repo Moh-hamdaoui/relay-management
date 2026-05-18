@@ -10,6 +10,7 @@ import { CommonModule } from '@angular/common';
   imports: [ReactiveFormsModule, CommonModule, RouterModule],
   templateUrl: './register.html',
   styleUrl: './register.css',
+  standalone: true,
 })
 export class Register {
   registerForm: FormGroup;

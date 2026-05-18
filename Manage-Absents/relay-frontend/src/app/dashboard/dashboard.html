@@ -1,0 +1,88 @@
+<div class="min-h-screen bg-background">
+  <div class="border-border bg-card">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-8">
+      <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between mt-8">
+        <div class="mb-6 lg:mb-0">
+          <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+            <div>
+              <h1 class="text-3xl font-bold tracking-tight text-foreground">Tableau de bord</h1>
+              <p class="text-muted-foreground mt-2">Vue d'ensemble des absences de l'équipe</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Loading -->
+    <div *ngIf="isLoading" class="flex items-center justify-center py-20">
+      <div class="w-8 h-8 border-4 border-primary/20 border-t-primary rounded-full animate-spin"></div>
+    </div>
+
+    <ng-container *ngIf="!isLoading">
+      <!-- Filters and Tabs -->
+      <div class="mb-8">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <!-- Tabs -->
+          <div class="inline-flex border border-border rounded-2xl p-1">
+            <button
+              *ngFor="let tab of tabData"
+              (click)="setActiveTab(tab.value)"
+              [class]="'rounded-2xl px-4 py-2 text-sm font-medium transition-all duration-200 ' +
+                (activeTab === tab.value
+                  ? 'bg-card shadow-sm text-foreground border border-border'
+                  : 'text-muted-foreground hover:text-foreground hover:bg-card/50')"
+            >
+              {{ tab.label }}
+              <span
+                *ngIf="tab.count > 0"
+                class="ml-2 bg-primary text-primary-foreground text-xs font-semibold px-2 py-0.5 rounded-full"
+              >
+                {{ tab.count }}
+              </span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Empty state -->
+      <div *ngIf="activeList.length === 0" class="text-center py-16">
+        <div class="mx-auto w-24 h-24 bg-muted rounded-full flex items-center justify-center mb-4">
+          <svg class="w-12 h-12 text-muted-foreground/40" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+              d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+          </svg>
+        </div>
+        <h3 class="text-lg font-medium text-foreground mb-2">Aucune absence</h3>
+        <p class="text-muted-foreground">Il n'y a aucune absence dans cette catégorie pour le moment.</p>
+      </div>
+
+      <!-- Cards grid -->
+      <div *ngIf="activeList.length > 0" class="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+        <app-absence-card
+          *ngFor="let absence of activeList"
+          [absence]="absence"
+          [user]="getUser(absence.user_id)"
+          [coverages]="getCoveragesForAbsence(absence.id)"
+          [coverageUsers]="users"
+          (cardClick)="selectAbsence(absence)"
+        />
+      </div>
+    </ng-container>
+  </div>
+
+  <!-- Modal -->
+  <app-absence-detail-modal
+    [open]="!!selectedAbsence"
+    [absence]="selectedAbsence"
+    [absenceUser]="selectedAbsence ? getUser(selectedAbsence.user_id) : null"
+    [coverages]="selectedAbsence ? getCoveragesForAbsence(selectedAbsence.id) : []"
+    [responsibilities]="responsibilities"
+    [users]="users"
+    [currentUser]="currentUser"
+    (closeModal)="closeModal()"
+    (coverageUpdated)="onCoverageUpdated()"
+  />
+</div>

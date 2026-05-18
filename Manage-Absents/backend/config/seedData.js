@@ -71,10 +71,11 @@ export function insertFullDemoDataset(database = db) {
     "INSERT INTO unavailability (user_id, start_date, end_date) VALUES (?, ?, ?)",
   );
 
-  const uAlice = insertUnav.run(aliceId, "2025-02-01", "2025-02-07");
-  const uBob = insertUnav.run(bobId, "2025-03-10", "2025-03-14");
-  const uClaire = insertUnav.run(claireId, "2025-04-01", "2025-04-05");
-  const uDiego = insertUnav.run(diegoId, "2025-05-20", "2025-05-24");
+  // Créer des absences pour les dates actuelles (2026)
+  const uAlice = insertUnav.run(aliceId, "2026-04-08", "2026-04-12"); // Alice en congé cette semaine
+  const uBob = insertUnav.run(bobId, "2026-04-15", "2026-04-16"); // Bob demain
+  const uClaire = insertUnav.run(claireId, "2026-04-20", "2026-04-25"); // Claire plus tard
+  const uDiego = insertUnav.run(diegoId, "2026-05-01", "2026-05-05"); // Diego en mai
 
   const uaId = uAlice.lastInsertRowid;
   const ubId = uBob.lastInsertRowid;

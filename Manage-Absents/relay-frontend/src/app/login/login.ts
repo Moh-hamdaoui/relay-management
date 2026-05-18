@@ -10,6 +10,7 @@ import { CommonModule } from '@angular/common';
   imports: [ReactiveFormsModule, CommonModule, RouterModule],
   templateUrl: './login.html',
   styleUrl: './login.css',
+  standalone: true,
 })
 export class Login {
   loginForm: FormGroup;
@@ -31,7 +32,7 @@ export class Login {
       const { email, password } = this.loginForm.value;
       this.authService.login(email, password).subscribe({
         next: () => {
-          this.router.navigate(['/home']);
+          this.router.navigate(['/dashboard']);
         },
         error: (err) => {
           this.errorMessage = 'Login failed. Please check your credentials.';

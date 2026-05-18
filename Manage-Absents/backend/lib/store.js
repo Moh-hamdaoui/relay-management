@@ -167,8 +167,10 @@ function mapUnavailabilityRow(row) {
   return {
     id: String(row.id),
     userId: String(row.user_id),
-    startDate: row.start_date,
-    endDate: row.end_date,
+    user_id: String(row.user_id),
+    start_date: row.start_date,
+    end_date: row.end_date,
+    created_at: new Date().toISOString(), // Date actuelle par défaut
   };
 }
 

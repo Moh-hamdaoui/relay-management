@@ -1,0 +1,35 @@
+<nav class="bg-card border-b border-border shadow-sm">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+    <div class="flex items-center gap-3">
+      <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+        <span class="text-lg font-bold">R</span>
+      </div>
+      <div>
+        <p class="text-lg font-semibold text-foreground">Relay</p>
+      </div>
+    </div>
+
+    <div class="flex flex-wrap items-center gap-2">
+      <a routerLink="/dashboard" routerLinkActive="font-semibold text-foreground" class="px-3 py-2 rounded-lg text-sm text-muted-foreground hover:bg-muted hover:text-foreground transition">
+        Tableau de bord
+      </a>
+      <ng-container *ngIf="isAuthenticated(); else guestLinks">
+        <button
+          type="button"
+          (click)="logout()"
+          class="px-3 py-2 rounded-lg text-sm text-muted-foreground border border-border bg-background hover:bg-card hover:text-foreground transition"
+        >
+          Déconnexion
+        </button>
+      </ng-container>
+      <ng-template #guestLinks>
+        <a routerLink="/login" routerLinkActive="font-semibold text-foreground" class="px-3 py-2 rounded-lg text-sm text-muted-foreground hover:bg-muted hover:text-foreground transition">
+          Connexion
+        </a>
+        <a routerLink="/register" routerLinkActive="font-semibold text-foreground" class="px-3 py-2 rounded-lg text-sm text-muted-foreground hover:bg-muted hover:text-foreground transition">
+          Inscription
+        </a>
+      </ng-template>
+    </div>
+  </div>
+</nav>
