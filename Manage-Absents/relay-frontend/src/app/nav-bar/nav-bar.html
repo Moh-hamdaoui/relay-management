@@ -17,6 +17,9 @@
         <a routerLink="/mes-absences" routerLinkActive="active" class="nav-link px-3 py-2 rounded-lg text-sm text-muted-foreground hover:bg-[#F9F8FB] hover:text-foreground transition">
           Mes absences
         </a>
+        <a routerLink="/profile" routerLinkActive="active" class="nav-link px-3 py-2 rounded-lg text-sm text-muted-foreground hover:bg-[#F9F8FB] hover:text-foreground transition">
+          Profil
+        </a>
       </ng-container>
       <ng-container *ngIf="isAuthenticated(); else guestLinks">
         <button
