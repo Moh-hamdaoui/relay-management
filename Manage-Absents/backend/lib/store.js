@@ -1,4 +1,4 @@
-import db from "../config/db.js";
+import db from "../db/db.js";
 
 export function parseId(id) {
   const n = typeof id === "number" ? id : parseInt(String(id), 10);

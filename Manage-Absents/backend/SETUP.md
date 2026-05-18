@@ -44,16 +44,18 @@ npm run dev
 
 Au premier démarrage, deux choses se passent automatiquement :
 
-- `initDb.js` lit `schema.sql` et crée la base `relay.db` avec toutes les tables
-- `seedDb.js` insère des données de test si la base est vide
+- `db/initDb.js` lit `schema.sql` et crée la base `relay.db` avec toutes les tables
+- `db/seedData.js` (`seedMinimalIfEmpty`) insère un petit jeu de test si la base est vide
 
 Tu dois voir dans la console :
 
 ```
 ✅ Base de données initialisée
-✅ Données de test insérées
-🚀 Listening on http://localhost:3000
+✅ Données de test insérées (...)
+Listening on http://localhost:3000
 ```
+
+Pour un **jeu démo plus riche** (4 utilisateurs, plus de données) : `npm run db:seed` ou `npm run db:seed:reset`.
 
 ---
 
@@ -62,10 +64,10 @@ Tu dois voir dans la console :
 ```
 relay/
 
-├── config/
+├── db/
 │   ├── db.js          # Connexion SQLite
 │   ├── initDb.js      # Création des tables au démarrage
-│   └── seedDb.js      # Données de test
+│   └── seedData.js    # Seeds : minimal au boot, démo complet via npm run db:seed
 ├──routes/
 │   ├── users.js
 │   ├── responsibilities.js
@@ -84,10 +86,10 @@ relay/
 
 ## Données de test disponibles
 
-| Utilisateur  | Email          | Rôle                           |
-| ------------ | -------------- | ------------------------------ |
-| Alice Dupont | alice@mail.com | A 2 responsabilités, 1 absence |
-| Bob Martin   | bob@mail.com   | A 1 responsabilité             |
+| Utilisateur  | Email          | Rôle                                              |
+| ------------ | -------------- | ------------------------------------------------- |
+| Alice Dupont | alice@mail.com | 3 responsabilités, 2 absences (remplacements Bob) |
+| Bob Martin   | bob@mail.com   | 3 responsabilités, 1 absence (remplacements Alice) |
 
 ---
 

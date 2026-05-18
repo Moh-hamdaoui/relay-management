@@ -8,10 +8,10 @@ const root = path.join(__dirname, "..");
 process.chdir(root);
 
 process.env.RELAY_INIT_DB_QUIET = "1";
-await import("../config/initDb.js");
-const { default: db } = await import("../config/db.js");
+await import("../db/initDb.js");
+const { default: db } = await import("../db/db.js");
 const { clearDataset, insertFullDemoDataset } = await import(
-  "../config/seedData.js",
+  "../db/seedData.js",
 );
 
 const reset = process.argv.includes("--reset");
